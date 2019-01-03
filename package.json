@@ -658,7 +658,9 @@
     "compile": "tsc -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
-    "lint": "tslint -c tslint.json -p tsconfig.json"
+    "lint": "npm run typecheck && npm run tslint",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
