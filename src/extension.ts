@@ -1,81 +1,87 @@
 import * as vscode from 'vscode';
-import {Operation} from './operation';
+import { Operation } from './operation';
 
-var inMarkMode: boolean = false;
-var markHasMoved: boolean = false;
+import { getActiveTextEditor } from './utils';
+
+const {
+  registerCommand,
+  executeCommand,
+} = vscode.commands;
+
+let inMarkMode: boolean = false;
+let markHasMoved: boolean = false;
+
 export function activate(context: vscode.ExtensionContext): void {
-    let op = new Operation(),
-        commandList: string[] = [
-            "C-g",
+  const op = new Operation();
 
-            // Edit
-            "C-k", "C-w", "M-w", "C-y", "C-x_C-o",
-            "C-x_u", "C-/", "C-j", "C-S_bs",
+  const commandList: string[] = [
+    'C-g',
 
-            // Navigation
-            "C-l",
-        ],
-        cursorMoves: string[] = [
-            "cursorUp", "cursorDown", "cursorLeft", "cursorRight",
-            "cursorHome", "cursorEnd",
-            "cursorWordLeft", "cursorWordRight",
-            "cursorPageDown", "cursorPageUp",
-            "cursorTop", "cursorBottom"
-        ];
+    // Edit
+    'C-k', 'C-w', 'M-w', 'C-y', 'C-x_C-o',
+    'C-x_u', 'C-/', 'C-j', 'C-S_bs',
 
-    commandList.forEach(commandName => {
-        context.subscriptions.push(registerCommand(commandName, op));
-    });
+    // Navigation
+    'C-l',
+  ];
 
-    cursorMoves.forEach(element => {
-        context.subscriptions.push(vscode.commands.registerCommand(
-            "emacs."+element, () => {
-                if (inMarkMode) {
-                    markHasMoved  = true;
-                }
-                vscode.commands.executeCommand(
-                    inMarkMode ?
-                    element+"Select" :
-                    element
-                );
-            })
-        )
-    });
+  const cursorMoves: string[] = [
+    'cursorUp', 'cursorDown', 'cursorLeft', 'cursorRight',
+    'cursorHome', 'cursorEnd',
+    'cursorWordLeft', 'cursorWordRight',
+    'cursorPageDown', 'cursorPageUp',
+    'cursorTop', 'cursorBottom',
+  ];
 
-    initMarkMode(context);
+  commandList.forEach(commandName => {
+    context.subscriptions.push(registerCommandByName(commandName, op));
+  });
+
+  cursorMoves.forEach(element => {
+    context.subscriptions.push(registerCommand(
+      `emacs.${element}`, () => {
+        if (inMarkMode) {
+          markHasMoved = true;
+        }
+        executeCommand(`${element}${inMarkMode ? 'Select' : ''}` );
+      }),
+    );
+  });
+
+  initMarkMode(context);
 }
 
 export function deactivate(): void {
 }
 
 function initMarkMode(context: vscode.ExtensionContext): void {
-    context.subscriptions.push(vscode.commands.registerCommand(
-        'emacs.enterMarkMode', () => {
-            if (inMarkMode && !markHasMoved) {
-                inMarkMode = false;
-            } else {
-                initSelection();
-                inMarkMode = true;
-                markHasMoved = false;
-            }
-        })
-    );
+  context.subscriptions.push(registerCommand(
+    'emacs.enterMarkMode', () => {
+      if (inMarkMode && !markHasMoved) {
+        inMarkMode = false;
+      } else {
+        initSelection();
+        inMarkMode = true;
+        markHasMoved = false;
+      }
+    }),
+  );
 
-    context.subscriptions.push(vscode.commands.registerCommand(
-        'emacs.exitMarkMode', () => {
-            vscode.commands.executeCommand("cancelSelection");
-            if (inMarkMode) {
-                inMarkMode = false;
-            }
-        })
-    );
+  context.subscriptions.push(registerCommand(
+    'emacs.exitMarkMode', () => {
+      executeCommand('cancelSelection');
+      if (inMarkMode) {
+        inMarkMode = false;
+      }
+    }),
+  );
 }
 
-function registerCommand(commandName: string, op: Operation): vscode.Disposable {
-    return vscode.commands.registerCommand("emacs." + commandName, op.getCommand(commandName));
+function registerCommandByName(commandName: string, op: Operation): vscode.Disposable {
+  return registerCommand(`emacs.${commandName}`, op.getCommand(commandName));
 }
 
 function initSelection(): void {
-    var currentPosition: vscode.Position = vscode.window.activeTextEditor.selection.active;
-    vscode.window.activeTextEditor.selection = new vscode.Selection(currentPosition, currentPosition);
+  const currentPosition: vscode.Position = getActiveTextEditor().selection.active;
+  getActiveTextEditor().selection = new vscode.Selection(currentPosition, currentPosition);
 }
