@@ -32,6 +32,10 @@
     "contributes": {
         "keybindings": [
             {
+                "key": "ctrl+x ctrl+c",
+                "command": "workbench.action.quit"
+            },
+            {
                 "key": "right",
                 "command": "emacs.cursorRight",
                 "when": "editorTextFocus"
@@ -469,7 +473,7 @@
             },
             {
                 "key": "ctrl+x ctrl+f",
-                "command": "workbench.action.quickOpen"
+                "command": "explorer.newFile"
             },
             {
                 "key": "ctrl+x ctrl+s",
@@ -497,6 +501,10 @@
             {
                 "key": "ctrl+x ctrl+n",
                 "command": "workbench.action.newWindow"
+            },
+            {
+                "key": "ctrl+x 0",
+                "command": "workbench.action.maximizeEditor"
             },
             {
                 "key": "ctrl+x 1",
@@ -579,7 +587,34 @@
             },
             {
                 "key": "ctrl+x b",
-                "command": "workbench.action.showAllEditors"
+                "command": "workbench.action.quickOpen"
+            },
+            {
+                "key": "alt+,",
+                "command": "workbench.action.navigateBack"
+            },
+            {
+                "key": "alt+left",
+                "command": "workbench.action.navigateBack"
+            },
+            {
+                "key": "alt+right",
+                "command": "workbench.action.navigateForward"
+            },
+            {
+                "key": "alt+.",
+                "command": "editor.action.goToImplementation",
+                "when": "editorHasImplementationProvider && editorTextFocus && !isInEmbeddedEditor"
+            },
+            {
+                "key": "ctrl+=",
+                "command": "editor.action.smartSelect.grow",
+                "when": "editorTextFocus"
+            },
+            {
+                "key": "ctrl+-",
+                "command": "editor.action.smartSelect.shrink",
+                "when": "editorTextFocus"
             },
             {
                 "key": "ctrl+shift+backspace",
@@ -597,6 +632,21 @@
                 "when": "editorTextFocus && !editorReadonly"
             },
             {
+                "key": "ctrl+t",
+                "command": "editor.action.transposeLetters",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+            {
+                "key": "alt+u",
+                "command": "editor.action.transformToUppercase",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+            {
+                "key": "alt+l",
+                "command": "editor.action.transformToLowercase",
+                "when": "editorTextFocus && !editorReadonly"
+            },
+            {
                 "key": "alt+backspace",
                 "command": "deleteWordLeft",
                 "when": "editorTextFocus && !editorReadonly"
@@ -605,8 +655,9 @@
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
+        "compile": "tsc -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test",
         "lint": "tslint -p tslint.json --type-check **/*.ts"
     },
     "devDependencies": {

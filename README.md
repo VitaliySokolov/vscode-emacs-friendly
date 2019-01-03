@@ -32,6 +32,10 @@ The following are some of the changes and enhancements from the original:
 | `M-g n` | Jump to next error |
 | `M-g p` | Jump to previous error |
 | `C-l` |  Center screen on current line |
+| `M-.` | Jump to implementation |
+| `M-,` | Go back |
+| `M-left` | Go back |
+| `M-rigth` | Go forward |
 
 
 ### Search Commands
@@ -63,8 +67,11 @@ The following are some of the changes and enhancements from the original:
 | `C-x u` (`C-/`)| Undo |
 | `C-;` | Toggle line comment in and out |
 | `M-;` | Toggle region comment in and out |
-| `C-x C-l` | Convert to lower case |
 | `C-x C-u` | Convert to upper case |
+| `C-x C-l` | Convert to lower case |
+| `M-u` | Convert to upper case |
+| `M-l` | Convert to lower case |
+| `C-t` | Transpose Letters |
 
 ### Other Commands
 |Command | Desc |
@@ -74,7 +81,10 @@ The following are some of the changes and enhancements from the original:
 | `C-quote` | IntelliSense Suggestion |
 | `M-x` | Open command palette |
 | `C-M-SPC` | Toggle SideBar visibility |
-| `C-x z` | | Toggle Zen Mode |
+| `C-x z` | Toggle Zen Mode |
+| `C-x C-c` | Exit |
+| `C-=` | Grow smart selection |
+| `C--` | Shrink smart selection |
 
 ### File Commands
 |Command | Desc |
@@ -86,14 +96,15 @@ The following are some of the changes and enhancements from the original:
 ### Tab / Buffer Manipulation Commands
 |Command | Desc |
 |--------|------|
-| `C-x b` | Switch to another open buffer |
-| `C-x C-f` | QuickOpen a file |
+| `C-x b` | QuickOpen a file |
+| `C-x C-f` | Create a new file |
 | `C-x k` | Close current tab (buffer) |
 | `C-x C-k` | Close all tabs |
 | `C-x 1` | Close editors in other (split) group.  |
 | `C-x 2` | Split editor |
 | `C-x 3` | Toggle split layout (vertical to horizontal) |
 | `C-x o` | Focus other split editor |
+| `C-x 0` | Hide sidebar |
 
 ## Conflicts with default key bindings
 - `ctrl+d`: editor.action.addSelectionToNextFindMatch => **Use `ctrl+alt+n` instead**;
