@@ -1,5 +1,5 @@
 {
-    "name": "vscode-emacs-friendly",
+    "name": "vscode-emacs-unfriendly",
     "displayName": "Emacs Friendly Keymap",
     "description": "Emacs keybindings and selection, friendly interaction with the system clipboard.",
     "icon": "emacs_pacifica.png",
